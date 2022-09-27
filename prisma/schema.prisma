@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// model Test {
+//   id   String  @id @default(auto()) @map("_id") @db.ObjectId
+//   test String?
+// }
+
+model User {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  // Other fields
+  name     String
+  age      Int
+  addr     String
+  test     String?
+  favfood  String?  @default("없음")
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+// 있어도 되고 없어도 되는건 타입 뒤에 ?를 붙인다. ex)String?
+// createAt : 등록한 시간, 디폴트로 현재 시간을 넣는다.
+// updatedAt : 파일 바뀐 시간을 기록.
+
+model Post {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  title    String
+  body     String
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
