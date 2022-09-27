@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { cls } from "../libs/client/utils";
 
 interface LayoutProps {
   title: string;
@@ -6,6 +8,9 @@ interface LayoutProps {
 }
 
 export default function Layout(props: LayoutProps) {
+  const router = useRouter(); // use로 시작하는건 다 hook 이라고 부른다.
+  console.log(router.pathname);
+
   function 다크모드전환() {
     document.body.classList.toggle("dark");
     //body에 접근하여 해당 인자가 있으면 그걸 없애고,
@@ -13,11 +18,11 @@ export default function Layout(props: LayoutProps) {
   }
 
   return (
-    <div className="flex justify-center bg-gray-500">
+    <div className="flex justify-center bg-gray-500 ">
       <div
         className=" border-2 h-[100vh] w-[640px]
        flex flex-col justify-between
-       bg-[#FEFDFF] text-[#191925] dark:bg-[#1E1E20] dark:text-[#FDFDFE]
+       bg-[#FEFDFF] text-[#191925] dark:bg-[#202020] dark:text-[#FDFDFE]
        "
       >
         <header
@@ -47,11 +52,17 @@ export default function Layout(props: LayoutProps) {
             </svg>
           </div>
         </header>
-        <div className="">{props.children}</div>
+        <div className="h-[80vh]">{props.children}</div>
         <footer className="h-[100px] border-t-4">
           <nav className="flex justify-between h-full">
+            {/* 홈 버튼 */}
             <Link href={"/"}>
-              <button className="w-full flex justify-center items-center hover:bg-slate-200 ">
+              <button
+                className={cls(
+                  "w-full flex justify-center items-center hover:bg-slate-300 py-4 px-5",
+                  router.pathname === "/" ? "sunmoon_btn" : " "
+                )}
+              >
                 <div className="flex flex-col items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +83,13 @@ export default function Layout(props: LayoutProps) {
               </button>
             </Link>
             <Link href={"/data"}>
-              <button className="w-full flex justify-center items-center hover:bg-slate-200 ">
+              {/* DATA 버튼 */}
+              <button
+                className={cls(
+                  "w-full flex justify-center items-center hover:bg-slate-300 py-4 px-5",
+                  router.pathname === "/data" ? "sunmoon_btn" : " "
+                )}
+              >
                 <div className="flex flex-col items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +110,13 @@ export default function Layout(props: LayoutProps) {
               </button>
             </Link>
             <Link href={"/setting"}>
-              <button className="w-full flex justify-center items-center hover:bg-slate-200 ">
+              {/* SETTING 버튼 */}
+              <button
+                className={cls(
+                  "w-full flex justify-center items-center hover:bg-slate-300 py-4 px-5 ",
+                  router.pathname === "/setting" ? "sunmoon_btn" : " "
+                )}
+              >
                 <div className="flex flex-col items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
