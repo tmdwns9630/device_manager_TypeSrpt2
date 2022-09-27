@@ -4,8 +4,8 @@ import Layout from "../components/Layout";
 
 const Home: NextPage = () => {
   return (
-    <Layout title="HOME">
-      <div>Heelo</div>
+    <Layout title="SETTING">
+      <div> Setting 화면 </div>
     </Layout>
   );
 };

@@ -288,3 +288,63 @@ export default async function handler(
     // console.log(users);
   }, []);
 ```
+
+### 타입스크립트 오류를 잠시 우회하고 싶으면 주석으로 달아서 밑의 한 줄만 오류를 우회한다. 급할 때만 쓰자.
+
+```
+// @ts-ignore
+
+```
+
+# 몰입형 교육 5-17
+
+오늘은 노션 한번 테스트 해보자.
+
+_타입 스크립트에서 이벤트 호출_
+
+- 타입 스크립트의 도움 : 타입 스크립트는 메서드 호출할 때 점 찍으면 ctrl+space로 자동 완성을 불러올 수 있다.
+- 함수 정의할 때 인자를 “ele:String”처럼 타입 지정을 해줘야 한다.
+- 지정 후 자동 완성을 쓰면 쓸 수 있는 메서드 리스트가 나온다.
+- input onchange event의 타입을 모두가 궁금해 한다.
+  - const ch = ( event ) ⇒ {
+    setText(event.currentTarget.value);}
+  - const ch = ( event: **React.ChangeEvent<HTMLInputElement>** ) ⇒ {
+    setText(event.currentTarget.value);}
+- 사용하는 태그, 속성(핸들러)가 달라지면 쓰는 타입 지정도 달라진다.
+- 이럴 땐 태그, 속성, 타입스크립트 등의 키워드로 구글 검색해보자.
+
+- 타입 스크립트를 잠시 우회하고 싶으면 주석으로 달아서 밑의 한 줄만 오류를 우회한다. 급할 때만 쓰자.
+
+```tsx
+// @ts-ignore
+```
+
+😓 현재 ㅈ된 부분 : api/user/의 ts 파일들이 다 연동이 안되어 있음.
+
+프리티어 자동 정렬 적용이 안되어 있다.
+
+- 현재는 이 형식을 암기해두자.
+
+```tsx
+fetch("/api/adduser2")
+  .then((res) => res.json())
+  .then((json) => console.log(json));
+```
+
+```tsx
+setUsers([...users, json.user]);
+```
+
+… : 중, 대 괄호를 해제한다.
+
+- 거기에 다시 괄호를 붙이면 원래대로 들어간다,.
+- 위 코드는
+  - users = [ {}, {}, {], … ] 로 있는걸
+  - users = {}, {}, {], …
+  - users = {}, {}, {], … , {새 유저}
+  - users = [ {}, {}, {], … , {새 유저} ]
+- 의 순서로 새로 고침 없이 데이터베이스 출력한 목록에 데이터를 추가하자마자 화면 갱신을 할 수 있다.
+
+Delete
+
+- filter 함수로 삭제할 ID가 아닌 ID만 모아서 새 배열을 만들어 setUsers에 리턴한다.
