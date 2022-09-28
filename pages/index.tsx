@@ -40,6 +40,7 @@ const Home: NextPage = () => {
         <div id="센서목록" className="flex flex-wrap justify-center">
           {[1, 1, 1, 1, 1].map((device, idx) => (
             <div
+              key={idx}
               data-comment="장비카드"
               className="bg-[#60A6FE] dark:bg-[#363345] border-2 w-52 h-52 p-4 
             flex flex-col justify-between rounded-2xl

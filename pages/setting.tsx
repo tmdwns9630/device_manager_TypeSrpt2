@@ -46,19 +46,23 @@ const Home: NextPage = () => {
       setErrorMessage("설치 위치을(를) 입력하세요.");
       return;
     }
-    if (!unit) {
-      setErrorMessage("단위을(를) 입력하세요.");
-      return;
-    }
     if (!type) {
       setErrorMessage("장치 종류을(를) 입력하세요.");
       return;
     }
+    if (!unit) {
+      setErrorMessage("단위을(를) 입력하세요.");
+      return;
+    }
+
     setErrorMessage("");
 
     // todo - 서버에 body로 싣어서 보낼 데이터
     const data = { product, location, unit, memo };
     console.log(data);
+
+    //2 서버로 데이터 전송
+    fetch("/api/device/add");
   }
 
   //<select> change
@@ -162,6 +166,7 @@ const Home: NextPage = () => {
             ></input>
           </div>
           {/* ----입력4 끝--- */}
+          <div className="text-red-500">{errorMessage}</div>
           <button
             className="w-full py-5 text-2xl font-bold sunmoon_btn"
             onClick={장비등록버튼클릭}

@@ -44,6 +44,7 @@ enum DeviceType {
   HUMI
   CO2
 }
+
 //타입을 저 셋 중 하나로 강제함.
 
 model Device {
