@@ -2,6 +2,7 @@ import { Device } from "@prisma/client";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import DeviceCard from "../components/DeviceCard";
 import Layout from "../components/Layout";
 
 const Home: NextPage = () => {
@@ -51,28 +52,9 @@ const Home: NextPage = () => {
           <div>[실시간 버튼 자리]</div>
         </div>
         {/* -------링크드2유 엔드--------------------------- */}
-        <div id="센서목록" className="flex flex-wrap justify-center">
-          {deviceReadData.map((device, idx) => (
-            <div
-              key={idx}
-              data-comment="장비카드"
-              className="bg-[#60A6FE] dark:bg-[#363345] border-2 w-52 h-52 p-4 
-            flex flex-col justify-between rounded-2xl
-            m-5"
-            >
-              <div className=" flex justify-end">
-                <span className="text-5xl">{device.unit}</span>
-                <span className="text-2xl text-gray-500">%</span>
-              </div>
-              <div className=" flex flex-col">
-                <span className="text-gray-500">
-                  {device.location} ({device.memo})
-                </span>
-                <span className="text-3xl">{device.product}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/*장비 카드 전체를 컴포넌트로 분리한다.  */}
+        {deviceReadData.map((device, idx) => {})}
+        <DeviceCard></DeviceCard>
       </div>
     </Layout>
   );
