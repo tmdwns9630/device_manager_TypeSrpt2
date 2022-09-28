@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 //import client from "../../libs/server/client";
-import { User } from "@prisma/client";
+// import { User } from "@prisma/client";
+import { Device } from "@prisma/client";
+import client from "../../../libs/server/client";
 
 // type Data = {
 //   name: string;
@@ -8,7 +10,7 @@ import { User } from "@prisma/client";
 
 interface Data {
   ok: boolean;
-  user?: User;
+  newDevice?: Device;
   error?: string;
 }
 
@@ -25,14 +27,17 @@ export default async function handler(
     return;
   }
 
-  //const { product, location, type, unit, memo } = request.body;
-  const {
-    body: { product, location, type, unit, memo },
-  } = request;
+  // const {
+  //   body: { product, location, type, unit, memo },
+  // } = request;
   // rhldwkg laksgdl Tmsek.
   // console.log(body); //body는 변수명이 아니라, 키값이다.
-  console.log(request.body);
-  //입력 필드 검증
+  //console.log(request.body);
+
+  const { product, location, type, unit, memo } = JSON.parse(request.body);
+  console.log(product, location, type, unit, memo);
+
+  //!입력 필드 검증
   //if true는 그냥 접기 기능 쓸려고.
   //200 : 메서드 성공하긴 했는데 값이 비어있을 때.
   if (true) {
@@ -53,11 +58,26 @@ export default async function handler(
         .status(200)
         .json({ ok: false, error: "측정단위(unit)이(가) 없습니다." });
   }
-  //여기까지 완성---------------------------------------------------
+  //여기까지 오류처리 완성---------------------------------------------------
   try {
-    response.status(200).json({ ok: true });
+    //Device Row Create
+    // product, location, type, unit, memo
+
+    const newDevice = await client.device.create({
+      data: {
+        product,
+        location,
+        type,
+        unit,
+        memo,
+      },
+    }); //오류 ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ
+    //ㄴclient.여기를 바꿔야지.create
+
+    //------------------------------------
+    response.status(200).json({ ok: true, newDevice });
     console.log(request.method);
   } catch (err) {
-    response.status(200).json({ ok: false });
+    response.status(200).json({ ok: false, error: `${err}` });
   }
 }

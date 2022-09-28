@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useState } from "react";
+import { setTimeout } from "timers/promises";
 import Layout from "../components/Layout";
 
 const Home: NextPage = () => {
@@ -54,15 +55,19 @@ const Home: NextPage = () => {
       setErrorMessage("단위을(를) 입력하세요.");
       return;
     }
-
+    alert("전송되었습니다.");
     setErrorMessage("");
 
     // todo - 서버에 body로 싣어서 보낼 데이터
-    const data = { product, location, unit, memo };
+    const data = { product, type, location, unit, memo };
     console.log(data);
 
     //2 서버로 데이터 전송
-    fetch("/api/device/add");
+    // fetch("/api/device/add");
+    //이걸 post로 보내는 방법
+    fetch("/api/device/add", { method: "POST", body: JSON.stringify(data) })
+      .then((response) => response.json())
+      .then((json) => console.log(json));
   }
 
   //<select> change
