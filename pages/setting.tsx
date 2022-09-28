@@ -1,8 +1,12 @@
+import { Device } from "@prisma/client";
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { stringify } from "querystring";
+import { useEffect, useState } from "react";
 import { setTimeout } from "timers/promises";
 import Layout from "../components/Layout";
+import { cls } from "../libs/client/utils";
 
 const Home: NextPage = () => {
   const [product, setProduct] = useState(""); //제품명
@@ -13,6 +17,8 @@ const Home: NextPage = () => {
   //addDevice는 뭐더라?
   const [errorMessage, setErrorMessage] = useState(""); // 에러메시지
   const [type, setType] = useState(""); //장치종류, select
+  const [deviceReadData, setDeviceReadData] = useState<Device[]>([]); //api에서 받은 서버의 디바이스 데이터
+  const router = useRouter();
 
   //1 입력 폼에 데이터 유무 확인
 
@@ -22,52 +28,72 @@ const Home: NextPage = () => {
 
   //4 오류가 있으면 표시해줘야 함.
 
-  function 장비추가버튼클릭() {
-    console.log("장비추가버튼");
-    document.querySelector("#container_add_device")?.classList.toggle("hidden");
-    //css의 hidden 속성(display : none) : 본인과 자식을 전부 감춘다.
+  function ClearForm() {
     setProduct("");
     setLocation("");
     setUnit("");
     setMemo("");
+    setErrorMessage("");
+  }
+
+  function 장비추가버튼클릭() {
+    console.log("장비추가버튼");
+    document.querySelector("#container_add_device")?.classList.toggle("hidden");
+    //css의 hidden 속성(display : none) : 본인과 자식을 전부 감춘다.
+    ClearForm();
     //--------------------------
   }
 
   function 장비등록버튼클릭() {
     console.log("등록 버튼");
-    // if (!product || !location || !unit) {
-    //   alert("제품명/설치위치/단위를 입력해주세요.");
-    //   return;
-    // }
-    if (!product) {
-      setErrorMessage("제품명을(를) 입력하세요.");
-      return;
-    }
-    if (!location) {
-      setErrorMessage("설치 위치을(를) 입력하세요.");
-      return;
-    }
-    if (!type) {
-      setErrorMessage("장치 종류을(를) 입력하세요.");
-      return;
-    }
-    if (!unit) {
-      setErrorMessage("단위을(를) 입력하세요.");
-      return;
-    }
-    alert("전송되었습니다.");
-    setErrorMessage("");
 
+    //데이터 유무 체크
+    if (true) {
+      if (!product) {
+        setErrorMessage("제품명을(를) 입력하세요.");
+        return;
+      }
+      if (!location) {
+        setErrorMessage("설치 위치을(를) 입력하세요.");
+        return;
+      }
+      if (!type) {
+        setErrorMessage("장치 종류을(를) 입력하세요.");
+        return;
+      }
+      if (!unit) {
+        setErrorMessage("단위을(를) 입력하세요.");
+        return;
+      }
+      alert("전송되었습니다.");
+      setErrorMessage("");
+    }
     // todo - 서버에 body로 싣어서 보낼 데이터
     const data = { product, type, location, unit, memo };
     console.log(data);
 
     //2 서버로 데이터 전송
     // fetch("/api/device/add");
-    //이걸 post로 보내는 방법
+    //이걸 기본인 get에서 post 메서드로 바꿔서 보내는 방법
     fetch("/api/device/add", { method: "POST", body: JSON.stringify(data) })
       .then((response) => response.json())
-      .then((json) => console.log(json));
+      .then((json) => {
+        console.log(json);
+        if (json.ok) {
+          //등록 성공
+          //성공 후, add device를 숨기고, 내용을 초기화하라.
+          document
+            .querySelector("#container_add_device")
+            ?.classList.toggle("hidden");
+          ClearForm();
+
+          const tempArr = [...deviceReadData, json.newDevice];
+          setDeviceReadData(tempArr);
+        } else {
+          //오류 내용
+          setErrorMessage("전송 실패했습니다.");
+        }
+      });
   }
 
   //<select> change
@@ -75,6 +101,40 @@ const Home: NextPage = () => {
     console.log("장치종류 변경됨");
     setType(event.currentTarget.value);
   }
+
+  //데이터 출려어어어어어어어어어어어ㅓ어어어억 READ
+  useEffect(() => {
+    fetch("/api/device/all")
+      .then((res) => res.json())
+      .then((json) => setDeviceReadData(json.alldevice));
+
+    //console.log(deviceReadData[0].id);
+    //console.log(deviceReadData[0].id);
+    //여러 번 말하지만 이 모양은 외우고 있자.
+  }, []);
+
+  function 장치삭제버튼(장치ID: string) {
+    if (!장치ID) return; //안전장치
+
+    //서버에 삭제 요청
+    fetch(`/api/device/${장치ID}`, { method: "DELETE" })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json.id);
+
+        if (json.ok === true) {
+          //router.reload(); //방법1.바로 새로고침하라.
+          //방법2: 필터로 삭제할 id만 빼고 배열을 새로 만들어서 setData한다.
+          const tempArr = deviceReadData.filter(
+            (device) => device.id !== json.id
+          );
+          setDeviceReadData(tempArr);
+        }
+      });
+
+    console.log(장치ID);
+  }
+
   return (
     <Layout title="SETTING">
       <div className=" h-full overflow-y-scroll p-6 space-y-6">
@@ -103,10 +163,11 @@ const Home: NextPage = () => {
           </div>
         </div>
         <hr />
+        {/* 뉴디바이스 */}
         <div
           id="container_add_device"
-          data-comment={"New Device"}
-          className="space-y-5"
+          data-comment={"New Device 화면"}
+          className="space-y-5 hidden"
         >
           <div className="text-3xl font-bold">New Device</div>
           {/* 입력란 */}
@@ -180,6 +241,28 @@ const Home: NextPage = () => {
           </button>
         </div>
         <hr />
+        {/* 디바이스목록, 장비삭제버튼 */}
+        <div data-comment={"디바이스목록, 장비삭제버튼"}>
+          <h2 className="text-3xl font-bold">Device List</h2>
+          {deviceReadData.map((device, idx) => (
+            <div key={idx} className="border-b-4 py-5 flex justify-between">
+              <div>
+                <div>{device.id}</div>
+                {/* <div>[HUMI] 샤오이 새싹슈터 (거실)</div> */}
+                <div>
+                  {device.product} ( {device.location} )
+                </div>
+                <div>{device.memo ? device.memo : "메모가 없습니다."}</div>
+              </div>
+              <button
+                onClick={() => 장치삭제버튼(device.id)}
+                className="text-slate-200 bg-red-700 w-16 h-16 rounded-lg"
+              >
+                삭제
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </Layout>
   );

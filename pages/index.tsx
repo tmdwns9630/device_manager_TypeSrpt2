@@ -1,8 +1,22 @@
+import { Device } from "@prisma/client";
 import type { NextPage } from "next";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 
 const Home: NextPage = () => {
+  const [deviceReadData, setDeviceReadData] = useState<Device[]>([]); //api에서 받은 서버의 디바이스 데이터
+
+  useEffect(() => {
+    fetch("/api/device/all")
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json.alldevice);
+        setDeviceReadData(json.alldevice);
+        //console.log(deviceReadData[0]);
+      });
+  }, []);
+
   return (
     <Layout title="HOME">
       <div className="h-full overflow-y-scroll p-6 space-y-7">
@@ -38,7 +52,7 @@ const Home: NextPage = () => {
         </div>
         {/* -------링크드2유 엔드--------------------------- */}
         <div id="센서목록" className="flex flex-wrap justify-center">
-          {[1, 1, 1, 1, 1].map((device, idx) => (
+          {deviceReadData.map((device, idx) => (
             <div
               key={idx}
               data-comment="장비카드"
@@ -47,12 +61,14 @@ const Home: NextPage = () => {
             m-5"
             >
               <div className=" flex justify-end">
-                <span className="text-5xl">25</span>
+                <span className="text-5xl">{device.unit}</span>
                 <span className="text-2xl text-gray-500">%</span>
               </div>
               <div className=" flex flex-col">
-                <span className="text-gray-500">안방 에어컨 (메모)</span>
-                <span className="text-3xl">공기청정기</span>
+                <span className="text-gray-500">
+                  {device.location} ({device.memo})
+                </span>
+                <span className="text-3xl">{device.product}</span>
               </div>
             </div>
           ))}
