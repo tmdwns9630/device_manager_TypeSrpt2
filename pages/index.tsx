@@ -53,8 +53,11 @@ const Home: NextPage = () => {
         </div>
         {/* -------링크드2유 엔드--------------------------- */}
         {/*장비 카드 전체를 컴포넌트로 분리한다.  */}
-        {deviceReadData.map((device, idx) => {})}
-        <DeviceCard></DeviceCard>
+        <div className="flex flex-wrap">
+          {deviceReadData.map((device, idx) => (
+            <DeviceCard key={idx} device={device}></DeviceCard>
+          ))}
+        </div>
       </div>
     </Layout>
   );
