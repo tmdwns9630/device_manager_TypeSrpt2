@@ -38,3 +38,36 @@ model Post {
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
 }
+
+enum DeviceType {
+  TEMP
+  HUMI
+  CO2
+}
+//타입을 저 셋 중 하나로 강제함.
+
+model Device {
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  createAt DateTime   @default(now())
+  updateAt DateTime   @updatedAt
+  product  String
+  location String     @default("거실")
+  type     DeviceType // TEMP HUMI CO2
+  unit     String
+  memo     String?
+
+  sencings Sencing[]
+}
+
+//이거 자동정렬 어케 하드라? --> 고마워요, 리드미!
+
+//센서의 양이 많으니, 디바이스와 분리하여 관리하고, 서로 값 참조하게 한다.
+model Sencing {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  value    Float
+  Device   Device? @relation(fields: [deviceId], references: [id])
+  deviceId String? @db.ObjectId
+}

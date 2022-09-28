@@ -348,3 +348,56 @@ setUsers([...users, json.user]);
 Delete
 
 - filter 함수로 삭제할 ID가 아닌 ID만 모아서 새 배열을 만들어 setUsers에 리턴한다.
+
+# 22-09-28
+
+### select 태그
+
+```tsx
+<div data-comment={"입력5"} className="flex flex-col">
+            <span>장치 종류 *</span>
+            <select name="choice" className="setting_input">
+              <option hidden selected>
+                장치 종류를 선택하세요.
+              </option>
+              <option value="banana">온도 센서</option>
+              <option value="apple">습도 센서</option>
+              <option value="orange">CO2 센서</option>
+            </select>
+```
+
+- selected : 처음에 자동으로 지정됨.
+- hidden : 처음에만 표시하고 선택은 못하게 함.
+- 이상하게 selected 들어가면 오류 난다.
+
+### 데이터베이스 Device와 Sencing
+
+```
+model Device {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+product String
+location  String
+type  String // TEMP HUMI CO2
+unit  String
+memo  String?
+
+sencings Sencing[]
+}
+//이거 자동정렬 어케 하드라?
+
+//센서의 양이 많으니, 디바이스와 분리하여 관리하고, 서로 값 참조하게 한다.
+model Sencing {
+  id   String   @id @default(auto()) @map("_id") @db.ObjectId
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  value Float
+}
+
+```
+
+- 센싱에서 처리하는 데이터량이 많으니, 디바이스와 분리하여 관리한다.
+- 둘 사이의 관계를 맺게 하여 데이터를 서로 참조시킨다.
+- 디바이스의 “디바이스id” ↔ 센싱의 “디바이스id”를 서로 참조하게 한다.
