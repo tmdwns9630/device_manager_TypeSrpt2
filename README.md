@@ -9,6 +9,20 @@ npx create-next-app <폴더명> --typescript
 
 확장프로그램 - Markdown Preview Enhanced 설치 - ctrl shirt P - Markdown 미리보기 열기
 
+# 마크다운에 이미지 넣기
+
+1.
+
+```
+![ex_screenshot](./img/ElementalHEROPrisma-FUEN-EN-SR-1E.webp)
+```
+
+2.
+
+```
+<img src="./img/ElementalHEROPrisma-FUEN-EN-SR-1E.webp" width="200"  />
+```
+
 # tailWind 설치 방법
 
 1. tailwind 홈페이지 - Get Started - FrameWork - Next.js <br>
@@ -65,6 +79,8 @@ module.exports = {
 ```
 
 # Prisma
+
+<img src="./img/ElementalHEROPrisma-FUEN-EN-SR-1E.webp" width="200"  />
 
 - 차세대 Node.js, TypeScript의 Database ORM
 - Next.js의 데이터베이스 적용을 위해 설치.

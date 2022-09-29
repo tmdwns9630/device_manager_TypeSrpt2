@@ -19,7 +19,7 @@ export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse<Data>
 ) {
-  //Method 체크 : 받는 요청의 메서드가 post가 아니면 405 오류 처리.
+  //Method 체크 : 받는 요청의 메서드가 get 아니면 405 오류 처리.
   if (request.method !== "GET") {
     response.status(405).json({
       ok: false,
