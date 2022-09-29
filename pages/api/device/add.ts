@@ -1,12 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-//import client from "../../libs/server/client";
-// import { User } from "@prisma/client";
 import { Device } from "@prisma/client";
 import client from "../../../libs/server/client";
-
-// type Data = {
-//   name: string;
-// };
 
 interface Data {
   ok: boolean;
