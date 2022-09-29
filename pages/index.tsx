@@ -73,7 +73,5 @@ const Home: NextPage = () => {
     </Layout>
   );
 };
-{
-  [1, 2, 3].map((ele, idx) => <div>hello world</div>);
-}
+
 export default Home;

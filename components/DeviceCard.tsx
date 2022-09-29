@@ -11,7 +11,7 @@ export default function DeviceCard({ device }: DeviceCardProps) {
     fetch(`/api/sencing/${device.id}`)
       .then((res) => res.json())
       .then((json) => {
-        console.log(`센싱데이터 - ID : ${device.id}`);
+        //console.log(`센싱데이터 - ID ${device.id}`);
         setValue(json.value);
       });
   }, []);
