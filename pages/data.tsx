@@ -1,13 +1,15 @@
 import { Device } from "@prisma/client";
 import type { NextPage } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 
 const Home: NextPage = () => {
   const [deviceReadData, setDeviceReadData] = useState<Device[]>([]);
   const [selectId, setSelectId] = useState("");
-
+  const [sensingValue, setSensingValue] = useState("");
+  const router = useRouter;
   useEffect(() => {
     console.log("DATA 페이지로딩됨");
 
@@ -26,8 +28,21 @@ const Home: NextPage = () => {
     setSelectId(event.target.value);
   }
 
+  function 센서값변경(event: React.ChangeEvent<HTMLInputElement>) {
+    setSensingValue(event.currentTarget.value);
+    //console.log(selectId, inputStr);// 이 둘을 서버에 전송해준다.
+  }
+
   function 등록버튼() {
     console.log("등록버튼");
+
+    const data = { value: sensingValue };
+    fetch(`/api/sencing/${selectId}`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((json) => {});
   }
 
   return (
@@ -40,6 +55,7 @@ const Home: NextPage = () => {
             onChange={셀렉트박스변경이벤트}
             className="w-full h-12 ring-2 ring-black text-gray-800 px-2"
           >
+            <option hidden>장비를 선택해주세요.</option>
             {deviceReadData.map((device) => (
               <option key={device.id} value={device.id}>
                 [{device.type}] {device.product} ({device.location})
@@ -52,7 +68,13 @@ const Home: NextPage = () => {
           {selectId ? (
             <div className="space-y-5">
               <h2 className="text-3xl font-bold">선택 장비 : {selectId}</h2>
-              <input className="setting_input w-full"></input>
+              <input
+                className="setting_input w-full"
+                value={sensingValue}
+                onChange={센서값변경}
+                placeholder="입력"
+                type="number"
+              ></input>
               <button
                 onClick={등록버튼}
                 className="w-full py-5 text-2xl font-bold sunmoon_btn"
