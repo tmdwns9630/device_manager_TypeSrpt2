@@ -1,5 +1,6 @@
 //Sencing DB에 데이터 추가를 위해 device/add.ts를 복사해서 고쳐보자.
-
+//하지만 이 파일이 쓰이는 일은 없었다, [deviceid].ts를 개조해서 해결했기 때문이다.
+//그래도 뭐 기념 삼아 남겨둠. 코드 자체는 잘 돌아갔으니까.
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Device } from "@prisma/client";
 import client from "../../../libs/server/client";
@@ -29,7 +30,8 @@ export default async function handler(
 
   console.log(value);
 
-  //!입력 필드 검증_ 200 : 메서드 성공하긴 했는데 값이 비어있을 때.
+  //!입력 필드 검증_ 200 : 메서드 성공하긴 했는데 값이 비어있을 때.ㄴ
+  // 이 부분 개조를 못했다.
   // if (true) {
   //   if (!value)
   //     return response
@@ -55,5 +57,8 @@ export default async function handler(
     console.log(request.method);
   } catch (err) {
     response.status(200).json({ ok: false, error: `${err}` });
+  } finally {
+    //예외 유무 상관 없이 마지막에 실행되는 블록.
+    await client.$disconnect(); //DB 연결 해제.
   }
 }

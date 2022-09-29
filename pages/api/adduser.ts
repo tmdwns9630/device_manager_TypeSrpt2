@@ -58,5 +58,8 @@ export default async function handler(
     res.status(200).json({ ok: true, user });
   } catch (err) {
     res.status(200).json({ ok: false });
+  } finally {
+    //예외 유무 상관 없이 마지막에 실행되는 블록.
+    await client.$disconnect(); //DB 연결 해제.
   }
 }

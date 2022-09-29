@@ -86,5 +86,8 @@ export default async function handler(
     //
   } catch (err) {
     response.status(200).json({ ok: false, error: `ㅈ됐음 -   ${err}` });
+  } finally {
+    //예외 유무 상관 없이 마지막에 실행되는 블록.
+    await client.$disconnect(); //DB 연결 해제.
   }
 }

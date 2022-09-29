@@ -36,4 +36,5 @@ yarn-error.log*
 next-env.d.ts
 
 # prisma
+# DB의 주소에 ID/PW가 있어서 이게 유출되면 DB 데이터 다 뚫린다. 
 .env

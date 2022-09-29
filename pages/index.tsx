@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import DeviceCard from "../components/DeviceCard";
 import Layout from "../components/Layout";
+import { PacmanLoader, HashLoader, GridLoader } from "react-spinners";
 
 const Home: NextPage = () => {
   const [deviceReadData, setDeviceReadData] = useState<Device[]>([]); //api에서 받은 서버의 디바이스 데이터
@@ -21,6 +22,10 @@ const Home: NextPage = () => {
   return (
     <Layout title="HOME">
       <div className="h-full overflow-y-scroll p-6 space-y-7">
+        <div className="flex justify-between">
+          <PacmanLoader color="#36d7b7" />
+          <HashLoader color="#36d7b7" />
+        </div>
         <div id="웰컴메시지" className="flex justify-between items-center ">
           <div>
             <div className="text-5xl font-extrabold">Hello, Peter 😎</div>
@@ -49,7 +54,12 @@ const Home: NextPage = () => {
         {/* -------웰컴메시지 엔드--------------------------- */}
         <div id="링크드2유" className="flex justify-between items-center">
           <div className="text-2xl font-bold">Linked to you</div>
-          <div>[실시간 버튼 자리]</div>
+          <div className="flex items-center">
+            <div>
+              <GridLoader color="#36d7b7" />
+            </div>
+            <div>[실시간 버튼 자리]</div>
+          </div>
         </div>
         {/* -------링크드2유 엔드--------------------------- */}
         {/*장비 카드 전체를 컴포넌트로 분리한다.  */}

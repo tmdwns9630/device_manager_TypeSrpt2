@@ -26,7 +26,11 @@ export default async function handler(
     //res.status(200).json({ name: "AllUser-okokok", users: users });
     //↑↓ 는 동일한 코드다.
     res.status(200).json({ name: "AllUser-okokok", users });
-  } catch (err) {}
+  } catch (err) {
+  } finally {
+    //예외 유무 상관 없이 마지막에 실행되는 블록.
+    await client.$disconnect(); //DB 연결 해제.
+  }
 }
 //ex6 문법 : model Users와 const users의 이름이 같다.
 // 이 경우, users 이름으로 변수 하나를 그대로쓸 수 있다.
