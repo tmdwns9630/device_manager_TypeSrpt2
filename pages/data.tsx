@@ -48,8 +48,10 @@ const Home: NextPage = () => {
   return (
     <Layout title="data">
       <div className="h-full overflow-y-scroll p-6 space-y-7">
-        <div>교양필수 수업으로 인해 등록 버튼 쪽 함수 미구현</div>
         <h2 className="text-3xl font-bold">장비 선택</h2>
+        <div className="text-3xl font-bold text-red-600">
+          교양필수 수업으로 인해 등록 버튼 쪽 함수 미구현
+        </div>
         {/* select Box */}
         <div>
           <select
