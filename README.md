@@ -417,3 +417,24 @@ model Sencing {
 - 센싱에서 처리하는 데이터량이 많으니, 디바이스와 분리하여 관리한다.
 - 둘 사이의 관계를 맺게 하여 데이터를 서로 참조시킨다.
 - 디바이스의 “디바이스id” ↔ 센싱의 “디바이스id”를 서로 참조하게 한다.
+
+## Prettier 자동정렬 적용
+
+2. User(사용자) > TextEditor(텍스트 편집기) > Formatting(서식)
+
+- Format On Paste
+
+: 사용자가 코드를 붙여넣기 했을 때, 자동으로 코드를 정렬
+
+- Format On Save
+
+: 사용자가 코드를 저장 했을 때, 자동으로 코드를 정렬
+
+- Format On Type
+
+: 사용자가 코드를 입력할 때, 자동으로 코드를 정렬
+
+[적용이 안되는 경우]
+File(파일) > Preferences(기본 설정) 으로 들어가서 'Default Formatter' 검색
+
+하단의 설정이 null로 되어있을텐데 이걸 'enbenp.prettier-vscode'로 바꿔준다.

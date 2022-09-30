@@ -4,7 +4,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import DeviceCard from "../components/DeviceCard";
 import Layout from "../components/Layout";
-import { PacmanLoader, HashLoader, GridLoader } from "react-spinners";
+import {
+  PacmanLoader,
+  HashLoader,
+  GridLoader,
+  CircleLoader,
+  RingLoader,
+  SquareLoader,
+} from "react-spinners";
 
 const Home: NextPage = () => {
   const [deviceReadData, setDeviceReadData] = useState<Device[]>([]); //api에서 받은 서버의 디바이스 데이터
@@ -25,6 +32,9 @@ const Home: NextPage = () => {
         <div className="flex justify-between">
           <PacmanLoader color="#36d7b7" />
           <HashLoader color="#36d7b7" />
+          <CircleLoader color="#36d7b7" />
+          <RingLoader color="#36d7b7" />
+          <SquareLoader color="#36d7b7" />
         </div>
         <div id="웰컴메시지" className="flex justify-between items-center ">
           <div>
