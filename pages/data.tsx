@@ -52,6 +52,9 @@ const Home: NextPage = () => {
         <div className="text-3xl font-bold text-red-600">
           교양필수 수업으로 인해 등록 버튼 쪽 함수 미구현
         </div>
+        <div className="text-3xl font-bold text-blue-500">
+          지급 노트북 LG그램에 환경 세팅.
+        </div>
         {/* select Box */}
         <div>
           <select
