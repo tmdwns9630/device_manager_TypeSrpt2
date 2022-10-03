@@ -67,15 +67,24 @@ export default async function handler(
         const obj = JSON.parse(request.body);
 
         if (isNaN(obj.value.toString()) === true) {
-          response
+          //숫자가 아니면 에러처리
+          return response
             .status(500)
             .json({ ok: false, error: `숫자를 입력해주세요.` });
         }
 
         const value = Number(obj.value);
-        console.log(deviceid);
-        console.log(value);
+        // console.log(deviceid);
+        // console.log(value);
 
+        await client.sencing.create({
+          data: {
+            value,
+            deviceId: deviceid.toString(),
+          },
+        });
+
+        //등록 성공
         response.status(200).json({ ok: true });
         break;
 

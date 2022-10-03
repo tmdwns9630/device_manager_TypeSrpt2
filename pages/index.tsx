@@ -11,10 +11,13 @@ import {
   CircleLoader,
   RingLoader,
   SquareLoader,
+  BounceLoader,
 } from "react-spinners";
+import Toggle from "react-toggle";
 
 const Home: NextPage = () => {
   const [deviceReadData, setDeviceReadData] = useState<Device[]>([]); //api에서 받은 서버의 디바이스 데이터
+  const [bToggle, setBToggle] = useState(false);
 
   useEffect(() => {
     fetch("/api/device/all")
@@ -25,6 +28,17 @@ const Home: NextPage = () => {
         //console.log(deviceReadData[0]);
       });
   }, []);
+
+  function 토글변경() {
+    setBToggle(!bToggle);
+    // console.log(`토글변경됨 - ${!bToggle}`);
+
+    if (!bToggle) {
+      console.log("실시간 ON");
+    } else {
+      console.log("실시간 OFF");
+    }
+  }
 
   return (
     <Layout title="HOME">
@@ -64,11 +78,16 @@ const Home: NextPage = () => {
         {/* -------웰컴메시지 엔드--------------------------- */}
         <div id="링크드2유" className="flex justify-between items-center">
           <div className="text-2xl font-bold">Linked to you</div>
-          <div className="flex items-center">
-            <div>
-              <GridLoader color="#36d7b7" />
-            </div>
-            <div>[실시간 버튼 자리]</div>
+          <div className="flex items-center select-none space-x-2">
+            {bToggle && <GridLoader color="#36d7b7" className="inline-block" />}
+            <Toggle
+              id={"cheese-status"}
+              onChange={토글변경}
+              defaultChecked={bToggle}
+            />
+            <label htmlFor="cheese-status">
+              실시간 <span>{bToggle ? "ON" : "OFF"}</span>
+            </label>
           </div>
         </div>
         {/* -------링크드2유 엔드--------------------------- */}

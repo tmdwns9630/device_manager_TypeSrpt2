@@ -9,7 +9,7 @@ const Home: NextPage = () => {
   const [deviceReadData, setDeviceReadData] = useState<Device[]>([]);
   const [selectId, setSelectId] = useState("");
   const [sensingValue, setSensingValue] = useState("");
-  const router = useRouter;
+  const router = useRouter();
   useEffect(() => {
     console.log("DATA 페이지로딩됨");
 
@@ -42,7 +42,11 @@ const Home: NextPage = () => {
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((json) => {});
+      .then((json) => {
+        if (json.ok) {
+          router.reload();
+        }
+      });
   }
 
   return (
